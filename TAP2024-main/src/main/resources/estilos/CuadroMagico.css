@@ -1,0 +1,11 @@
+.root{
+    -fx-background-color: #badcf8;
+}
+.label {
+    -fx-text-fill: #000000;
+    -fx-alignment: center;
+}
+.button{
+    -fx-background-color: #6464e7;
+    -fx-text-fill: orange;
+}

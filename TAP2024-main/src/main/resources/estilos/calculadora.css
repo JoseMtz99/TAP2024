@@ -1,0 +1,12 @@
+#color-operador{
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(
+    rgb(255, 255, 255),
+    rgb(246, 19, 19)
+    );
+}
+
+.text-field{
+    -fx-highlight-fill: null;
+    -fx-highlight-text-fill: null;
+}

@@ -1,3 +1,33 @@
 .root{
     -fx-background-image: url('https://assets.bedu.org/images/top-lenguajes-programacion-2021.jpg?w=1200');
+    -fx-background-size: 100%;
 }
+
+.menu-bar{
+    -fx-background-color: rgba(210, 213, 229, 0);
+    -fx-border-color: white;
+    -fx-border-width: 3px;
+}
+
+.menu{
+    -fx-background-color: white;
+}
+
+.menu:hover{
+    -fx-background-color: red;
+}
+
+.label:hover{
+    -fx-background-color: black;
+    -fx-font-size: 15pt;
+}
+
+.menu-item{
+    -fx-background-color: #4e9a1b;
+    -fx-border-color: #000;
+}
+
+.menu-item:hover{
+    -fx-background-color:black;
+}
+
