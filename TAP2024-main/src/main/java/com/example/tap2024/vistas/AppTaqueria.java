@@ -18,7 +18,7 @@ public class AppTaqueria extends Stage {
     private Scene escena;
     private HBox hbox, hbAgregar;
     private VBox vboxBotones, vboxMesas;
-    private Button btnMas,btnMenos,btnAgregar,cocinaButton, empleadosButton, cuentaButton, tomarOrdenButton, regresarButton;
+    private Button btnMas,btnMenos,btnAgregar,cocinaButton, btnadmin, cuentaButton, tomarOrdenButton, regresarButton;
     private GridPane gridMesas, gdpCategorias, gdpProducto;
     private String estiloBotones,estilomesa;
     private TextField txtCantidad;
@@ -59,12 +59,12 @@ public class AppTaqueria extends Stage {
         cuentaButton = new Button();
         cuentaButton.setGraphic(imageViewCuenta);
 
-        Image imagenEmpleados = new Image(getClass().getResourceAsStream("/Images/empleados.png"));
+        Image imagenEmpleados = new Image(getClass().getResourceAsStream("/Images/admon.png"));
         ImageView imageViewEmpleados = new ImageView(imagenEmpleados);
         imageViewEmpleados.setFitWidth(50);
         imageViewEmpleados.setFitHeight(50);
-        empleadosButton = new Button();
-        empleadosButton.setGraphic(imageViewEmpleados);
+        btnadmin = new Button();
+        btnadmin.setGraphic(imageViewEmpleados);
 
         Image imagenCocina = new Image(getClass().getResourceAsStream("/Images/cocina.png"));
         ImageView imageViewCocina = new ImageView(imagenCocina);
@@ -85,19 +85,19 @@ public class AppTaqueria extends Stage {
 
         tomarOrdenButton.setStyle(estiloBotones);
         cuentaButton.setStyle(estiloBotones);
-        empleadosButton.setStyle(estiloBotones);
+        btnadmin.setStyle(estiloBotones);
         cocinaButton.setStyle(estiloBotones);
         regresarButton.setStyle(estiloBotones);
 
 
         tomarOrdenButton.setOnAction(event -> botonPresionado("Tomar una orden"));
         cuentaButton.setOnAction(event -> botonPresionado("Cuenta"));
-        empleadosButton.setOnAction(event -> botonPresionado("Empleados"));
+        btnadmin.setOnAction(actionEvent -> new VistaAdmon());
         cocinaButton.setOnAction(event -> botonPresionado("Cocina"));
         regresarButton.setOnAction(event -> botonPresionado("Regresar"));
 
 
-        vboxBotones.getChildren().addAll(tomarOrdenButton, cuentaButton, empleadosButton, cocinaButton, regresarButton);
+        vboxBotones.getChildren().addAll(tomarOrdenButton, cuentaButton, btnadmin, cocinaButton, regresarButton);
 
 
         vboxMesas = new VBox(10);
@@ -146,7 +146,7 @@ public class AppTaqueria extends Stage {
         hbox.getChildren().addAll(vboxBotones, vboxMesas);
 
         if (!admin){
-           empleadosButton.setDisable(true);
+           btnadmin.setDisable(true);
         }
 
     }
