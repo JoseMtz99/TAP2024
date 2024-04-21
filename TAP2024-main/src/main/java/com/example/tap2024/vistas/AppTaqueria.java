@@ -1,5 +1,6 @@
 package com.example.tap2024.vistas;
 
+import com.example.tap2024.modelos.CategoriasDao;
 import com.example.tap2024.modelos.MesasDao;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,6 +27,8 @@ public class AppTaqueria extends Stage {
     private TextField txtCantidad;
     private Label lblCantidad;
     private int cantidad;
+    private IconoMesa icnMesa;
+    private IconoCategorias icnCategorias;
 
     public AppTaqueria(boolean administrador) {
         super();
@@ -105,24 +108,31 @@ public class AppTaqueria extends Stage {
         vboxMesas = new VBox(10);
         vboxMesas.setAlignment(Pos.TOP_CENTER); // Alineación superior
 
-
-
-        gridMesas = new GridPane();
-        gridMesas.setHgap(10);
-        gridMesas.setVgap(10);
-
-        gdpCategorias= new GridPane();
-
-        gdpProducto= new GridPane();
-
         MesasDao mesa = new MesasDao();
         ArrayList<MesasDao> listaMesas = new ArrayList<>();
         listaMesas = mesa.CONSULTAR();
 
+        int h=10;
+        int v=10;
+
+        gridMesas = new GridPane();
+        if (listaMesas.size()%4==0) {
+            v=listaMesas.size()/4;
+            h=4;
+        } else if (listaMesas.size()%3==0) {
+            v=listaMesas.size()/3;
+            h=3;
+        } else if (listaMesas.size()%2==0) {
+            v=listaMesas.size()/2;
+            h=2;
+        }
+
+        gridMesas.setHgap(h);
+        gridMesas.setVgap(v);
 
         for (int i = 0; i < listaMesas.size(); i++) {
 
-            IconoMesa icnMesa = new IconoMesa();
+            icnMesa = new IconoMesa();
             icnMesa.mesa=listaMesas.get(i);
 
             Image imagenMesa = new Image(getClass().getResourceAsStream("/Images/mesas.png"));
@@ -133,19 +143,46 @@ public class AppTaqueria extends Stage {
             icnMesa.Boton = new Button();
             icnMesa.Boton.setGraphic(imageViewMesa);
             icnMesa.Boton.setPrefSize(80, 80);
-            gridMesas.add(icnMesa.Boton, i % 5, i / 5);
+            gridMesas.add(icnMesa.Boton, i % v, i / v);
 
-            estilomesa = "-fx-background-color: gray;";
-            icnMesa.Boton.setStyle(estilomesa);
+            icnMesa.Boton.setOnAction(actionEvent -> BotonMesa(icnMesa));
 
-            if (icnMesa.mesa.getOcupada()==1){
-                icnMesa.Boton.setDisable(true);
-            }else {
-                icnMesa.Boton.setDisable(false);
+            EstiloMesas();
+        }
+        gdpCategorias= new GridPane();
+        gdpCategorias.setPrefSize(200,100);
+        CategoriasDao cat = new CategoriasDao();
+        ArrayList<CategoriasDao> listaCategorias = new ArrayList<>();
+        listaCategorias = cat.CONSULTAR();
+
+        h=listaCategorias.size()/2;
+        v=2;
+
+        gdpCategorias.setHgap(h);
+        gdpCategorias.setVgap(v);
+        int cont=0;
+        for (int i = 0; i <v ; i++) {
+            for (int j = 0; j < h; j++) {
+                icnCategorias = new IconoCategorias();
+                icnCategorias.categoriasDao=listaCategorias.get(cont);
+                Image imgCat = new Image(getClass().getResourceAsStream("/"+listaCategorias.get(cont).getDirImagen()));
+                ImageView imvCat = new ImageView(imgCat);
+                imvCat.setFitWidth(80);
+                imvCat.setFitHeight(80);
+
+                icnCategorias.boton = new Button();
+                icnCategorias.boton.setGraphic(imvCat);
+                icnCategorias.boton.setPrefSize(90, 90);
+                gdpCategorias.add(icnCategorias.boton,j,i);
+
+                icnCategorias.boton.setOnAction(actionEvent -> BotonCategorias(icnCategorias));
+                cont++;
+
             }
 
-
         }
+        gdpCategorias.setDisable(true);
+        gdpProducto= new GridPane();
 
         btnMenos= new Button("-");
         btnMenos.setDisable(true);
@@ -173,6 +210,22 @@ public class AppTaqueria extends Stage {
            btnadmin.setDisable(true);
         }
 
+    }
+
+    private void BotonCategorias(IconoCategorias icnCategorias) {
+    }
+
+    private void EstiloMesas() {
+        if (icnMesa.mesa.getOcupada()==1){
+            estilomesa = "-fx-background-color: red;";
+        }else {
+            estilomesa = "-fx-background-color: green;";
+        }
+        icnMesa.Boton.setStyle(estilomesa);
+    }
+
+    private void BotonMesa(IconoMesa icono) {
+        gdpCategorias.setDisable(false);
     }
 
     private void RestarProducto() {
@@ -221,6 +274,27 @@ class IconoMesa{
 
     public void setMesa(MesasDao mesa) {
         this.mesa = mesa;
+    }
+}
+
+class IconoCategorias{
+    public CategoriasDao categoriasDao;
+    public Button boton;
+
+    public CategoriasDao getCategoriasDao() {
+        return categoriasDao;
+    }
+
+    public void setCategoriasDao(CategoriasDao categoriasDao) {
+        this.categoriasDao = categoriasDao;
+    }
+
+    public Button getBoton() {
+        return boton;
+    }
+
+    public void setBoton(Button boton) {
+        this.boton = boton;
     }
 }
 

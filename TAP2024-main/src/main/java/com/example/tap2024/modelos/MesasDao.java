@@ -60,7 +60,7 @@ public class MesasDao {
         String query = "INSERT INTO Mesa (" +
                 "numeroMesa, " +
                 "ocupada) " +
-                "VALUES('"+numeroMesa+"','"+ocupada+"')";
+                "VALUES("+numeroMesa+","+ocupada+")";
         try {
             Statement stmt = Conexion.connection.createStatement();
             stmt.executeUpdate(query);
@@ -71,7 +71,7 @@ public class MesasDao {
 
     public void ACTUALIZAR(){
         String query = "UPDATE Mesa SET " +
-                "ocupada='"+ocupada+"'" +
+                "ocupada="+ocupada+" "+
                 "WHERE numeroMesa = "+numeroMesa;
         try {
             Statement stmt = Conexion.connection.createStatement();
