@@ -1,6 +1,6 @@
 package com.example.tap2024.vistas;
 
-import com.example.tap2024.vistas.EmpleadoTaqueria;
+import com.example.tap2024.modelos.MesasDao;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class AppTaqueria extends Stage {
     private Scene escena;
     private HBox hbox, hbAgregar;
@@ -23,7 +25,7 @@ public class AppTaqueria extends Stage {
     private String estiloBotones,estilomesa;
     private TextField txtCantidad;
     private Label lblCantidad;
-
+    private int cantidad;
 
     public AppTaqueria(boolean administrador) {
         super();
@@ -63,7 +65,7 @@ public class AppTaqueria extends Stage {
         ImageView imageViewEmpleados = new ImageView(imagenEmpleados);
         imageViewEmpleados.setFitWidth(50);
         imageViewEmpleados.setFitHeight(50);
-        btnadmin = new Button();
+        btnadmin = new Button("Administración");
         btnadmin.setGraphic(imageViewEmpleados);
 
         Image imagenCocina = new Image(getClass().getResourceAsStream("/Images/cocina.png"));
@@ -77,7 +79,7 @@ public class AppTaqueria extends Stage {
         ImageView imageViewSalir = new ImageView(imagenSalir);
         imageViewSalir.setFitWidth(50);
         imageViewSalir.setFitHeight(50);
-        regresarButton = new Button();
+        regresarButton = new Button("Cerrar");
         regresarButton.setGraphic(imageViewSalir);
 
         estiloBotones = "-fx-font-size: 15px; -fx-min-width: 120px; -fx-min-height: 120px; -fx-background-color: gray;";
@@ -94,7 +96,7 @@ public class AppTaqueria extends Stage {
         cuentaButton.setOnAction(event -> botonPresionado("Cuenta"));
         btnadmin.setOnAction(actionEvent -> new VistaAdmon());
         cocinaButton.setOnAction(event -> botonPresionado("Cocina"));
-        regresarButton.setOnAction(event -> botonPresionado("Regresar"));
+        regresarButton.setOnAction(event -> this.close());
 
 
         vboxBotones.getChildren().addAll(tomarOrdenButton, cuentaButton, btnadmin, cocinaButton, regresarButton);
@@ -113,31 +115,49 @@ public class AppTaqueria extends Stage {
 
         gdpProducto= new GridPane();
 
+        MesasDao mesa = new MesasDao();
+        ArrayList<MesasDao> listaMesas = new ArrayList<>();
+        listaMesas = mesa.CONSULTAR();
 
-        int numMesas = 20;
-        for (int i = 0; i < numMesas; i++) {
+
+        for (int i = 0; i < listaMesas.size(); i++) {
+
+            IconoMesa icnMesa = new IconoMesa();
+            icnMesa.mesa=listaMesas.get(i);
 
             Image imagenMesa = new Image(getClass().getResourceAsStream("/Images/mesas.png"));
             ImageView imageViewMesa = new ImageView(imagenMesa);
             imageViewMesa.setFitWidth(50);
             imageViewMesa.setFitHeight(50);
 
-            Button mesaButton = new Button();
-            mesaButton.setGraphic(imageViewMesa);
-            mesaButton.setPrefSize(80, 80);
-            gridMesas.add(mesaButton, i % 5, i / 5);
+            icnMesa.Boton = new Button();
+            icnMesa.Boton.setGraphic(imageViewMesa);
+            icnMesa.Boton.setPrefSize(80, 80);
+            gridMesas.add(icnMesa.Boton, i % 5, i / 5);
 
             estilomesa = "-fx-background-color: gray;";
-            mesaButton.setStyle(estilomesa);
+            icnMesa.Boton.setStyle(estilomesa);
+
+            if (icnMesa.mesa.getOcupada()==1){
+                icnMesa.Boton.setDisable(true);
+            }else {
+                icnMesa.Boton.setDisable(false);
+            }
 
 
         }
 
         btnMenos= new Button("-");
+        btnMenos.setDisable(true);
+
         btnMas=new Button("+");
         btnAgregar=new Button("Agregar");
         lblCantidad= new Label("Cantidad");
-        txtCantidad=new TextField("0");
+
+        txtCantidad=new TextField();
+        cantidad=0;
+        txtCantidad.setText(String.valueOf(cantidad));
+        txtCantidad.setEditable(false);
         hbAgregar= new HBox(btnMenos,btnMas,lblCantidad,txtCantidad,btnAgregar);
 
         vboxMesas.getChildren().addAll(gridMesas, gdpCategorias, gdpProducto, hbAgregar);
@@ -145,10 +165,31 @@ public class AppTaqueria extends Stage {
 
         hbox.getChildren().addAll(vboxBotones, vboxMesas);
 
+
+        btnMas.setOnAction(actionEvent -> SumarProducto());
+        btnMenos.setOnAction(actionEvent -> RestarProducto());
+
         if (!admin){
            btnadmin.setDisable(true);
         }
 
+    }
+
+    private void RestarProducto() {
+        cantidad--;
+        txtCantidad.setText(String.valueOf(cantidad));
+        if (cantidad<1){
+            btnMenos.setDisable(true);
+        }
+
+    }
+
+    private void SumarProducto() {
+        if (cantidad<1){
+            btnMenos.setDisable(false);
+        }
+        cantidad++;
+        txtCantidad.setText(String.valueOf(cantidad));
     }
 
 
@@ -162,5 +203,25 @@ public class AppTaqueria extends Stage {
     }
 }
 
+class IconoMesa{
+    public Button Boton;
+    public MesasDao mesa;
+
+    public Button getBoton() {
+        return Boton;
+    }
+
+    public void setBoton(Button boton) {
+        Boton = boton;
+    }
+
+    public MesasDao getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(MesasDao mesa) {
+        this.mesa = mesa;
+    }
+}
 
 

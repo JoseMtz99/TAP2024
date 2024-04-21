@@ -8,7 +8,10 @@ import java.sql.Statement;
 import java.util.jar.JarEntry;
 
 public class EmpleadosDao {
+
     private int idEmpleado;
+    private String nomEmpleado,rfcEmpleado, direccion, telefono;
+    private float salario;
 
     public int getIdEmpleado() {
         return idEmpleado;
@@ -58,8 +61,8 @@ public class EmpleadosDao {
         this.salario = salario;
     }
 
-    private String nomEmpleado,rfcEmpleado, direccion, telefono;
-    private float salario;
+
+
     public void INSERTAR(){
         String query = "INSERT INTO empleado (" +
                 "nomEmpleado, " +

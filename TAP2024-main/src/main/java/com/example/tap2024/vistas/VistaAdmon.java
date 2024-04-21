@@ -23,21 +23,21 @@ public class VistaAdmon extends Stage {
 
     private void CrearUI() {
 
-        btnCategorias = new Button();
+        btnCategorias = new Button("Categorias");
         Image imgCategorias = new Image(getClass().getResourceAsStream("/Images/categorias.png"));
         ImageView imvCategorias = new ImageView(imgCategorias);
         imvCategorias.setFitWidth(50);
         imvCategorias.setFitHeight(50);
         btnCategorias.setGraphic(imvCategorias);
 
-        btnProductos = new Button();
+        btnProductos = new Button("Productos");
         Image imgproductos = new Image(getClass().getResourceAsStream("/Images/productos.png"));
         ImageView imvProductos = new ImageView(imgproductos);
         imvProductos.setFitWidth(50);
         imvProductos.setFitHeight(50);
         btnProductos.setGraphic(imvProductos);
 
-        btnEmpleados= new Button();
+        btnEmpleados= new Button("Empleados");
         Image imgEmpleados = new Image(getClass().getResourceAsStream("/Images/empleados.png"));
         ImageView imvEmpleados = new ImageView(imgEmpleados);
         imvEmpleados.setFitWidth(50);

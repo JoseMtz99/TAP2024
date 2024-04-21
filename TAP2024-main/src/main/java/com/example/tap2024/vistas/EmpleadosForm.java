@@ -20,6 +20,7 @@ public class EmpleadosForm extends Stage {
     String [] arrPromts = new String[]{"Nombre del empleado","RFC","Sueldo","Telefono","Direccion"};
     private EmpleadosDao objEmp;
     private TableView<EmpleadosDao> tbvEmpleados;
+
     public EmpleadosForm(TableView<EmpleadosDao> tbvEmp, EmpleadosDao objEmp) {
         tbvEmpleados= tbvEmp;
         this.objEmp=(objEmp==null)? new EmpleadosDao():objEmp;
