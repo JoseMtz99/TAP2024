@@ -58,8 +58,8 @@ public class HelloApplication extends Application {
         mitMemorama.setOnAction(actionEvent -> new Memorama());
 
         //Abrir la vista de empleados
-        mitEmpleado=new MenuItem("Empleados Taqueria");
-        mitEmpleado.setOnAction(actionEvent -> new AppTaqueria());
+        mitEmpleado=new MenuItem("App Taqueria");
+        mitEmpleado.setOnAction(actionEvent -> new LoginApp());
 
         //Abrir Pista
         mitPista= new MenuItem("Pista");

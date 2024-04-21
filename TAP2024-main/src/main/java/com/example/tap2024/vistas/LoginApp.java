@@ -1,4 +1,4 @@
-package com.example.jesusroberto.vistas;
+package com.example.tap2024.vistas;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -37,7 +37,7 @@ public class LoginApp extends Stage {
         escena = new Scene(stackPane, 400, 300);
 
         // Crear el objeto Image con la ruta de la imagen
-        Image fondo = new Image(getClass().getResourceAsStream("/imagenes/Fondo.jpeg"));
+        Image fondo = new Image(getClass().getResourceAsStream("/Images/Fondo.jpeg"));
 
         // Crear el BackgroundImage con el objeto Image
         BackgroundImage backgroundImage = new BackgroundImage(fondo,
@@ -63,10 +63,14 @@ public class LoginApp extends Stage {
         btnLogin.setOnAction(e -> {
             String usuario = txtUsuario.getText();
             String contraseña = pswContraseña.getText();
+            boolean administrador = false;
             if (usuario.equals("Jaime") && contraseña.equals("12345")) {
-                abrirAppTaqueria();
+                abrirAppTaqueria(administrador);
+                this.close();
             } else if (usuario.equals("Armando") && contraseña.equals("54321")) {
-                abrirAppTaqueria();
+                administrador = true;
+                abrirAppTaqueria(administrador);
+                this.close();
             } else {
                 System.out.println("Usuario o contraseña incorrectos");
             }
@@ -87,10 +91,10 @@ public class LoginApp extends Stage {
 
     }
 
-    private void abrirAppTaqueria() {
+    private void abrirAppTaqueria(boolean administrador) {
         // Aquí debes abrir la ventana de la clase AppTaqueria
         // Por ejemplo:
-         AppTaqueria appTaqueria = new AppTaqueria();
+         AppTaqueria appTaqueria = new AppTaqueria(administrador);
          appTaqueria.show();
     }
 }

@@ -5,6 +5,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -14,15 +16,18 @@ import javafx.stage.Stage;
 
 public class AppTaqueria extends Stage {
     private Scene escena;
-    private HBox hbox;
+    private HBox hbox, hbAgregar;
     private VBox vboxBotones, vboxMesas;
-    private Button cocinaButton, empleadosButton, cuentaButton, tomarOrdenButton, regresarButton;
-    private GridPane gridMesas;
+    private Button btnMas,btnMenos,btnAgregar,cocinaButton, empleadosButton, cuentaButton, tomarOrdenButton, regresarButton;
+    private GridPane gridMesas, gdpCategorias, gdpProducto;
     private String estiloBotones,estilomesa;
+    private TextField txtCantidad;
+    private Label lblCantidad;
 
-    public AppTaqueria() {
+
+    public AppTaqueria(boolean administrador) {
         super();
-        CrearUI();
+        CrearUI(administrador);
         escena = new Scene(hbox);
         this.setTitle("AppTaqueria");
         this.setScene(escena);
@@ -30,7 +35,7 @@ public class AppTaqueria extends Stage {
         this.show();
     }
 
-    private void CrearUI() {
+    private void CrearUI(boolean admin) {
         hbox = new HBox(10);
         hbox.setPadding(new Insets(20));
         hbox.setAlignment(Pos.CENTER);
@@ -104,6 +109,10 @@ public class AppTaqueria extends Stage {
         gridMesas.setHgap(10);
         gridMesas.setVgap(10);
 
+        gdpCategorias= new GridPane();
+
+        gdpProducto= new GridPane();
+
 
         int numMesas = 20;
         for (int i = 0; i < numMesas; i++) {
@@ -124,11 +133,22 @@ public class AppTaqueria extends Stage {
 
         }
 
+        btnMenos= new Button("-");
+        btnMas=new Button("+");
+        btnAgregar=new Button("Agregar");
+        lblCantidad= new Label("Cantidad");
+        txtCantidad=new TextField("0");
+        hbAgregar= new HBox(btnMenos,btnMas,lblCantidad,txtCantidad,btnAgregar);
 
-        vboxMesas.getChildren().add(gridMesas);
+        vboxMesas.getChildren().addAll(gridMesas, gdpCategorias, gdpProducto, hbAgregar);
 
 
         hbox.getChildren().addAll(vboxBotones, vboxMesas);
+
+        if (!admin){
+           empleadosButton.setDisable(true);
+        }
+
     }
 
 
