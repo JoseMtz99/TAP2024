@@ -1,5 +1,6 @@
-package com.example.jesusroberto.vistas;
+package com.example.tap2024.vistas;
 
+import com.example.tap2024.vistas.EmpleadoTaqueria;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -39,35 +40,35 @@ public class AppTaqueria extends Stage {
         vboxBotones.setAlignment(Pos.TOP_CENTER);
 
 
-        Image imagenOrden = new Image(getClass().getResourceAsStream("/imagenes/orden.png"));
+        Image imagenOrden = new Image(getClass().getResourceAsStream("/Images/orden.png"));
         ImageView imageViewOrden = new ImageView(imagenOrden);
         imageViewOrden.setFitWidth(50);
         imageViewOrden.setFitHeight(50);
         tomarOrdenButton = new Button();
         tomarOrdenButton.setGraphic(imageViewOrden);
 
-        Image imagenCuenta = new Image(getClass().getResourceAsStream("/imagenes/cuenta.png"));
+        Image imagenCuenta = new Image(getClass().getResourceAsStream("/Images/cuenta.png"));
         ImageView imageViewCuenta = new ImageView(imagenCuenta);
         imageViewCuenta.setFitWidth(50);
         imageViewCuenta.setFitHeight(50);
         cuentaButton = new Button();
         cuentaButton.setGraphic(imageViewCuenta);
 
-        Image imagenEmpleados = new Image(getClass().getResourceAsStream("/imagenes/empleados.png"));
+        Image imagenEmpleados = new Image(getClass().getResourceAsStream("/Images/empleados.png"));
         ImageView imageViewEmpleados = new ImageView(imagenEmpleados);
         imageViewEmpleados.setFitWidth(50);
         imageViewEmpleados.setFitHeight(50);
         empleadosButton = new Button();
         empleadosButton.setGraphic(imageViewEmpleados);
 
-        Image imagenCocina = new Image(getClass().getResourceAsStream("/imagenes/cocina.png"));
+        Image imagenCocina = new Image(getClass().getResourceAsStream("/Images/cocina.png"));
         ImageView imageViewCocina = new ImageView(imagenCocina);
         imageViewCocina.setFitWidth(50);
         imageViewCocina.setFitHeight(50);
         cocinaButton = new Button();
         cocinaButton.setGraphic(imageViewCocina);
 
-        Image imagenSalir = new Image(getClass().getResourceAsStream("/imagenes/salir.png"));
+        Image imagenSalir = new Image(getClass().getResourceAsStream("/Images/salir.png"));
         ImageView imageViewSalir = new ImageView(imagenSalir);
         imageViewSalir.setFitWidth(50);
         imageViewSalir.setFitHeight(50);
@@ -107,7 +108,7 @@ public class AppTaqueria extends Stage {
         int numMesas = 20;
         for (int i = 0; i < numMesas; i++) {
 
-            Image imagenMesa = new Image(getClass().getResourceAsStream("/imagenes/mesas.png"));
+            Image imagenMesa = new Image(getClass().getResourceAsStream("/Images/mesas.png"));
             ImageView imageViewMesa = new ImageView(imagenMesa);
             imageViewMesa.setFitWidth(50);
             imageViewMesa.setFitHeight(50);

@@ -59,7 +59,7 @@ public class HelloApplication extends Application {
 
         //Abrir la vista de empleados
         mitEmpleado=new MenuItem("Empleados Taqueria");
-        mitEmpleado.setOnAction(actionEvent -> new EmpleadoTaqueria());
+        mitEmpleado.setOnAction(actionEvent -> new AppTaqueria());
 
         //Abrir Pista
         mitPista= new MenuItem("Pista");
