@@ -2,6 +2,7 @@ package com.example.tap2024.vistas;
 
 import com.example.tap2024.modelos.CategoriasDao;
 import com.example.tap2024.modelos.MesasDao;
+import com.example.tap2024.modelos.ProductosDao;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,14 +22,13 @@ public class AppTaqueria extends Stage {
     private Scene escena;
     private HBox hbox, hbAgregar;
     private VBox vboxBotones, vboxMesas;
-    private Button btnMas,btnMenos,btnAgregar,cocinaButton, btnadmin, cuentaButton, tomarOrdenButton, regresarButton;
+    private Button btnMas,btnMenos,btnAgregar, btnadmin, cuentaButton, tomarOrdenButton, regresarButton;
     private GridPane gridMesas, gdpCategorias, gdpProducto;
     private String estiloBotones,estilomesa;
     private TextField txtCantidad;
     private Label lblCantidad;
     private int cantidad;
-    private IconoMesa icnMesa;
-    private IconoCategorias icnCategorias;
+    private ArrayList<ProductosDao> listaProductos;
 
     public AppTaqueria(boolean administrador) {
         super();
@@ -36,14 +36,15 @@ public class AppTaqueria extends Stage {
         escena = new Scene(hbox);
         this.setTitle("AppTaqueria");
         this.setScene(escena);
-        this.sizeToScene();
         this.show();
+        this.setMaximized(true);
+
     }
 
     private void CrearUI(boolean admin) {
         hbox = new HBox(10);
         hbox.setPadding(new Insets(20));
-        hbox.setAlignment(Pos.CENTER);
+        hbox.setAlignment(Pos.CENTER_LEFT);
 
 
         vboxBotones = new VBox(10);
@@ -55,13 +56,15 @@ public class AppTaqueria extends Stage {
         imageViewOrden.setFitWidth(50);
         imageViewOrden.setFitHeight(50);
         tomarOrdenButton = new Button();
+
+        tomarOrdenButton.setDisable(true);
         tomarOrdenButton.setGraphic(imageViewOrden);
 
         Image imagenCuenta = new Image(getClass().getResourceAsStream("/Images/cuenta.png"));
         ImageView imageViewCuenta = new ImageView(imagenCuenta);
         imageViewCuenta.setFitWidth(50);
         imageViewCuenta.setFitHeight(50);
-        cuentaButton = new Button();
+        cuentaButton = new Button("Generar cuenta");
         cuentaButton.setGraphic(imageViewCuenta);
 
         Image imagenEmpleados = new Image(getClass().getResourceAsStream("/Images/admon.png"));
@@ -75,8 +78,7 @@ public class AppTaqueria extends Stage {
         ImageView imageViewCocina = new ImageView(imagenCocina);
         imageViewCocina.setFitWidth(50);
         imageViewCocina.setFitHeight(50);
-        cocinaButton = new Button();
-        cocinaButton.setGraphic(imageViewCocina);
+
 
         Image imagenSalir = new Image(getClass().getResourceAsStream("/Images/salir.png"));
         ImageView imageViewSalir = new ImageView(imagenSalir);
@@ -91,18 +93,16 @@ public class AppTaqueria extends Stage {
         tomarOrdenButton.setStyle(estiloBotones);
         cuentaButton.setStyle(estiloBotones);
         btnadmin.setStyle(estiloBotones);
-        cocinaButton.setStyle(estiloBotones);
         regresarButton.setStyle(estiloBotones);
 
 
-        tomarOrdenButton.setOnAction(event -> botonPresionado("Tomar una orden"));
+        tomarOrdenButton.setOnAction(event -> BotonOrden());
         cuentaButton.setOnAction(event -> botonPresionado("Cuenta"));
         btnadmin.setOnAction(actionEvent -> new VistaAdmon());
-        cocinaButton.setOnAction(event -> botonPresionado("Cocina"));
         regresarButton.setOnAction(event -> this.close());
 
 
-        vboxBotones.getChildren().addAll(tomarOrdenButton, cuentaButton, btnadmin, cocinaButton, regresarButton);
+        vboxBotones.getChildren().addAll(tomarOrdenButton, cuentaButton, btnadmin, regresarButton);
 
 
         vboxMesas = new VBox(10);
@@ -132,22 +132,22 @@ public class AppTaqueria extends Stage {
 
         for (int i = 0; i < listaMesas.size(); i++) {
 
-            icnMesa = new IconoMesa();
+            IconoMesa icnMesa = new IconoMesa();
             icnMesa.mesa=listaMesas.get(i);
 
             Image imagenMesa = new Image(getClass().getResourceAsStream("/Images/mesas.png"));
             ImageView imageViewMesa = new ImageView(imagenMesa);
             imageViewMesa.setFitWidth(50);
-            imageViewMesa.setFitHeight(50);
+            imageViewMesa.setFitHeight(40);
 
             icnMesa.Boton = new Button();
             icnMesa.Boton.setGraphic(imageViewMesa);
-            icnMesa.Boton.setPrefSize(80, 80);
+            icnMesa.Boton.setPrefSize(60, 50);
             gridMesas.add(icnMesa.Boton, i % v, i / v);
 
             icnMesa.Boton.setOnAction(actionEvent -> BotonMesa(icnMesa));
 
-            EstiloMesas();
+            EstiloMesas(icnMesa);
         }
         gdpCategorias= new GridPane();
         gdpCategorias.setPrefSize(200,100);
@@ -163,7 +163,7 @@ public class AppTaqueria extends Stage {
         int cont=0;
         for (int i = 0; i <v ; i++) {
             for (int j = 0; j < h; j++) {
-                icnCategorias = new IconoCategorias();
+                IconoCategorias icnCategorias = new IconoCategorias();
                 icnCategorias.categoriasDao=listaCategorias.get(cont);
                 Image imgCat = new Image(getClass().getResourceAsStream("/"+listaCategorias.get(cont).getDirImagen()));
                 ImageView imvCat = new ImageView(imgCat);
@@ -175,14 +175,16 @@ public class AppTaqueria extends Stage {
                 icnCategorias.boton.setPrefSize(90, 90);
                 gdpCategorias.add(icnCategorias.boton,j,i);
 
-                icnCategorias.boton.setOnAction(actionEvent -> BotonCategorias(icnCategorias));
+                icnCategorias.boton.setOnAction(actionEvent ->BotonCategorias(icnCategorias.categoriasDao.getIdCategoria()));
+
                 cont++;
 
             }
 
         }
         gdpCategorias.setDisable(true);
-        gdpProducto= new GridPane();
+
+        gdpProducto=new GridPane();
 
         btnMenos= new Button("-");
         btnMenos.setDisable(true);
@@ -210,12 +212,70 @@ public class AppTaqueria extends Stage {
            btnadmin.setDisable(true);
         }
 
+
+
     }
 
-    private void BotonCategorias(IconoCategorias icnCategorias) {
+    private void BotonOrden() {
+        gdpCategorias.setDisable(false);
     }
 
-    private void EstiloMesas() {
+    private void BotonCategorias(int idCate) {
+        System.out.println(idCate);
+        listaProductos=new ArrayList<>();
+        gdpProducto.getChildren().clear();
+        gdpProducto.setPrefSize(200,100);
+        ProductosDao prod = new ProductosDao();
+        if (listaProductos.size()>0){
+            listaProductos.clear();
+        }
+        listaProductos = prod.CONSULTARPORCATEGORIA(idCate);
+        int h=0;
+        int v=0;
+        if (listaProductos.size()%4==0) {
+            h=listaProductos.size()/2;
+            v=2;
+        } else if (listaProductos.size()%3==0) {
+            h= listaProductos.size()/3;
+            v=3;
+        }else if (listaProductos.size()%2==0) {
+            h=listaProductos.size()/2;
+            v=2;
+        }else{
+            h=listaProductos.size();
+            v=1;
+        }
+
+        gdpProducto.setHgap(h);
+        gdpProducto.setVgap(v);
+        int cont=0;
+        for (int i = 0; i < v; i++) {
+            for (int j = 0; j < h; j++) {
+                System.out.println(listaProductos.get(cont).getNombreProducto());
+                IconoProducto icnProducto = new IconoProducto();
+                icnProducto.producto=listaProductos.get(cont);
+                System.out.println(listaProductos.get(cont).getDirImagen());
+                Image imgProd = new Image(getClass().getResourceAsStream("/"+listaProductos.get(cont).getDirImagen()));
+                ImageView imvProd = new ImageView(imgProd);
+                imvProd.setFitWidth(80);
+                imvProd.setFitHeight(80);
+
+                icnProducto.Boton = new Button();
+                icnProducto.Boton.setGraphic(imvProd);
+                icnProducto.Boton.setPrefSize(90, 90);
+                gdpProducto.add(icnProducto.Boton,j,i);
+
+                icnProducto.Boton.setOnAction(actionEvent -> BotonProducto(icnProducto));
+                cont++;
+            }
+        }
+        gdpProducto.setVisible(true);
+    }
+
+    private void BotonProducto(IconoProducto icnProd) {
+    }
+
+    private void EstiloMesas(IconoMesa icnMesa) {
         if (icnMesa.mesa.getOcupada()==1){
             estilomesa = "-fx-background-color: red;";
         }else {
@@ -225,7 +285,17 @@ public class AppTaqueria extends Stage {
     }
 
     private void BotonMesa(IconoMesa icono) {
-        gdpCategorias.setDisable(false);
+        gdpCategorias.setDisable(true);
+        gdpProducto.setVisible(false);
+        if (icono.mesa.getOcupada()==0){
+            tomarOrdenButton.setText("Tomar orden");
+            tomarOrdenButton.setDisable(false);
+        }else{
+            tomarOrdenButton.setText("Modificar orden");
+            tomarOrdenButton.setDisable(false);
+        }
+
+
     }
 
     private void RestarProducto() {
@@ -295,6 +365,27 @@ class IconoCategorias{
 
     public void setBoton(Button boton) {
         this.boton = boton;
+    }
+}
+
+class IconoProducto{
+    public Button Boton;
+    public ProductosDao producto;
+
+    public Button getBoton() {
+        return Boton;
+    }
+
+    public void setBoton(Button boton) {
+        Boton = boton;
+    }
+
+    public ProductosDao getProducto() {
+        return producto;
+    }
+
+    public void setProducto(ProductosDao producto) {
+        this.producto = producto;
     }
 }
 
