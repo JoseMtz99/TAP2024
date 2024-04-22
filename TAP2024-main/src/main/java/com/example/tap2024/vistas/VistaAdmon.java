@@ -1,4 +1,5 @@
-package com.example.tap2024.vistas;
+package com.example.jesusroberto.vistas;
+
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,22 +24,22 @@ public class VistaAdmon extends Stage {
 
     private void CrearUI() {
 
-        btnCategorias = new Button("Categorias");
-        Image imgCategorias = new Image(getClass().getResourceAsStream("/Images/categorias.png"));
+        btnCategorias = new Button();
+        Image imgCategorias = new Image(getClass().getResourceAsStream("/Imagenes/categorias.png"));
         ImageView imvCategorias = new ImageView(imgCategorias);
         imvCategorias.setFitWidth(50);
         imvCategorias.setFitHeight(50);
         btnCategorias.setGraphic(imvCategorias);
 
-        btnProductos = new Button("Productos");
-        Image imgproductos = new Image(getClass().getResourceAsStream("/Images/productos.png"));
+        btnProductos = new Button();
+        Image imgproductos = new Image(getClass().getResourceAsStream("/Imagenes/productos.png"));
         ImageView imvProductos = new ImageView(imgproductos);
         imvProductos.setFitWidth(50);
         imvProductos.setFitHeight(50);
         btnProductos.setGraphic(imvProductos);
 
-        btnEmpleados= new Button("Empleados");
-        Image imgEmpleados = new Image(getClass().getResourceAsStream("/Images/empleados.png"));
+        btnEmpleados= new Button();
+        Image imgEmpleados = new Image(getClass().getResourceAsStream("/Imagenes/empleados.png"));
         ImageView imvEmpleados = new ImageView(imgEmpleados);
         imvEmpleados.setFitWidth(50);
         imvEmpleados.setFitHeight(50);
