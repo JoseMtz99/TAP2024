@@ -11,9 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -28,6 +26,11 @@ public class AppTaqueria extends Stage {
     private TextField txtCantidad;
     private Label lblCantidad;
     private int cantidad;
+    private IconoMesa icnMesa;
+    private IconoCategorias icnCategorias;
+    private Image imgFondo;
+    private BackgroundImage backgroundImage;
+    private Background background;
     private ArrayList<ProductosDao> listaProductos;
 
     public AppTaqueria(boolean administrador) {
@@ -45,6 +48,9 @@ public class AppTaqueria extends Stage {
         hbox = new HBox(10);
         hbox.setPadding(new Insets(20));
         hbox.setAlignment(Pos.CENTER_LEFT);
+
+        imgFondo = new Image(getClass().getResourceAsStream("/images/Fondo.jpeg"));
+        backgroundImage = new BackgroundImage(imgFondo,null,null,null,null);
 
 
         vboxBotones = new VBox(10);
@@ -102,7 +108,7 @@ public class AppTaqueria extends Stage {
         regresarButton.setOnAction(event -> this.close());
 
 
-        vboxBotones.getChildren().addAll(tomarOrdenButton, cuentaButton, btnadmin, regresarButton);
+        vboxBotones.getChildren().addAll(tomarOrdenButton, cuentaButton, btnadmin,  regresarButton);
 
 
         vboxMesas = new VBox(10);
@@ -183,8 +189,7 @@ public class AppTaqueria extends Stage {
 
         }
         gdpCategorias.setDisable(true);
-
-        gdpProducto=new GridPane();
+        gdpProducto= new GridPane();
 
         btnMenos= new Button("-");
         btnMenos.setDisable(true);
@@ -200,8 +205,8 @@ public class AppTaqueria extends Stage {
         hbAgregar= new HBox(btnMenos,btnMas,lblCantidad,txtCantidad,btnAgregar);
 
         vboxMesas.getChildren().addAll(gridMesas, gdpCategorias, gdpProducto, hbAgregar);
-
-
+        background = new Background(backgroundImage);
+        hbox.setBackground(background);
         hbox.getChildren().addAll(vboxBotones, vboxMesas);
 
 
@@ -211,8 +216,6 @@ public class AppTaqueria extends Stage {
         if (!admin){
            btnadmin.setDisable(true);
         }
-
-
 
     }
 
