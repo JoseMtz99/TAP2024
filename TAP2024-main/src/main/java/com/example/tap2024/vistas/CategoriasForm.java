@@ -60,7 +60,7 @@ public class CategoriasForm extends Stage {
             objCat.ACTUALIZAR();
         }else objCat.INSERTAR();
 
-        tbvCategorias.setItems(objCat.CONSULTAR());
+        tbvCategorias.setItems(objCat.CONSULTARVISTA());
         tbvCategorias.refresh();
 
         arrTxtCampos[0].clear();

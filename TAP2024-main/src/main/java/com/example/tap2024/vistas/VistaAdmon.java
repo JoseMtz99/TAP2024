@@ -33,6 +33,7 @@ public class VistaAdmon extends Stage {
         imvCategorias.setFitWidth(50);
         imvCategorias.setFitHeight(50);
         btnCategorias.setGraphic(imvCategorias);
+        btnCategorias.setOnAction(actionEvent -> new Categorias());
 
         Button btnProductos = new Button("Productos");
         Image imgproductos = new Image(getClass().getResourceAsStream("/Images/productos.png"));

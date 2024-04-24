@@ -57,26 +57,26 @@ public class Categorias extends Stage {
         tbcDirImg.setCellValueFactory(new PropertyValueFactory<>("dirImagen"));
 
         TableColumn<CategoriasDao,String> tbcEditar = new TableColumn<>("Editar");
-        tbcEditar.setCellFactory(
+        /*tbcEditar.setCellFactory(
                 new Callback<TableColumn<CategoriasDao, String>, TableCell<CategoriasDao, String>>() {
                     @Override
                     public TableCell<CategoriasDao, String> call(TableColumn<CategoriasDao, String> categoriasDaoStringTableColumn) {
                         return new ButtonCell(1);
                     }
                 }
-        );
+        );*/
 
         TableColumn<CategoriasDao,String> tbcBorrar = new TableColumn<>("Eliminar");
-        tbcBorrar.setCellFactory(
+        /*tbcBorrar.setCellFactory(
                 new Callback<TableColumn<CategoriasDao, String>, TableCell<CategoriasDao, String>>() {
                     @Override
                     public TableCell<CategoriasDao, String> call(TableColumn<CategoriasDao, String> categoriasDaoStringTableColumn) {
                         return new ButtonCell(2);
                     }
                 }
-        );
+        );*/
 
         tbvCategorias.getColumns().addAll(tbcEditar,tbcDirImg,tbcBorrar,tbcNomCat);
-        tbvCategorias.setItems(objCat.CONSULTAR());
+        tbvCategorias.setItems(objCat.CONSULTARVISTA());
     }
 }

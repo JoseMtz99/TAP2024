@@ -91,5 +91,27 @@ public class CategoriasDao {
         return listaCat;
     }
 
+    public ObservableList<CategoriasDao> CONSULTARVISTA(){
+        ObservableList<CategoriasDao> listaCat = FXCollections.observableArrayList();
+        String query = "SELECT * from Categorias";
+        try{
+            CategoriasDao cat;
+            Statement stmt = Conexion.connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()){
+                cat = new CategoriasDao();
+                cat.idCategoria=res.getInt("idCategoria");
+                cat.nombreCategoria=res.getString("nombreCategoria");
+                cat.dirImagen=res.getString("dirImagen");
+
+                listaCat.add(cat);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return listaCat;
+    }
+
 
 }
