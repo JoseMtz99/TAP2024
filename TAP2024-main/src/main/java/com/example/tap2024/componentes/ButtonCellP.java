@@ -33,7 +33,7 @@ public class ButtonCellP extends TableCell<ProductosDao,String> {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 objPro.ELIMINAR();
-                tbvProductos.setItems(objPro.CONSULTAR());
+                tbvProductos.setItems(objPro.CONSULTARVISTA());
                 tbvProductos.refresh();
             }
         }

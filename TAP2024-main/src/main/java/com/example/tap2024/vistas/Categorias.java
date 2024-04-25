@@ -40,7 +40,7 @@ public class Categorias extends Stage {
         bdpPrincipal=new BorderPane();//tlbOpciones,tbvEmpleados
         bdpPrincipal.setTop(tlbOpciones);
         bdpPrincipal.setCenter(tbvCategorias);
-        pnlPrincipal = new Panel("Menu del Empleado");
+        pnlPrincipal = new Panel("Menu de Categoria");
         pnlPrincipal.getStyleClass().add("panel-info");
         pnlPrincipal.setBody(bdpPrincipal);
         escena = new Scene(pnlPrincipal, 600, 500);
@@ -77,7 +77,7 @@ public class Categorias extends Stage {
                 }
         );
 
-        tbvCategorias.getColumns().addAll(tbcEditar,tbcDirImg,tbcBorrar,tbcNomCat);
+        tbvCategorias.getColumns().addAll(tbcNomCat, tbcDirImg, tbcEditar,tbcBorrar);
         tbvCategorias.setItems(objCat.CONSULTARVISTA());
     }
 }

@@ -85,8 +85,8 @@ public class Productos extends Stage {
                 }
         );
 
-        tbvProducto.getColumns().addAll(tbcDirImg,tbcNomPro,tbcPrecio,tbcEditar,tbcEliminar,tbcCosto);
-        tbvProducto.setItems(objProductos.CONSULTAR());
+        tbvProducto.getColumns().addAll(tbcDirImg,tbcNomPro,tbcPrecio,tbcCosto,tbcEditar,tbcEliminar);
+        tbvProducto.setItems(objProductos.CONSULTARVISTA());
 
     }
 }

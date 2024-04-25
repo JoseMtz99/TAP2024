@@ -1,5 +1,7 @@
-package com.example.tap2024.modelos;
+package com.example.tap2024.vistas;
 
+
+import com.example.tap2024.modelos.Conexion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -101,7 +103,7 @@ public class ProductosDao {
     }
 
 
-    public ObservableList<ProductosDao> CONSULTAR(){
+    public ObservableList<ProductosDao> CONSULTARVISTA(){
         ObservableList<ProductosDao> listaProd= FXCollections.observableArrayList();
         String query = "SELECT * from Producto";
         try{

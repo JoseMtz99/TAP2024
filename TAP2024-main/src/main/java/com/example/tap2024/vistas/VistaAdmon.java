@@ -41,6 +41,7 @@ public class VistaAdmon extends Stage {
         imvProductos.setFitWidth(50);
         imvProductos.setFitHeight(50);
         btnProductos.setGraphic(imvProductos);
+        btnProductos.setOnAction(actionEvent -> new Productos());
 
         Button btnEmpleados = new Button("Empleados");
         Image imgEmpleados = new Image(getClass().getResourceAsStream("/Images/empleados.png"));
