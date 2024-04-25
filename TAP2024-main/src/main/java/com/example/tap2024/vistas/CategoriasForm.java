@@ -1,7 +1,6 @@
 package com.example.tap2024.vistas;
 
 import com.example.tap2024.modelos.CategoriasDao;
-import com.example.tap2024.modelos.EmpleadosDao;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,10 +21,10 @@ public class CategoriasForm extends Stage {
 
 
     public CategoriasForm(TableView<CategoriasDao> tbvCategorias, CategoriasDao objCat) {
-        tbvCategorias= tbvCategorias;
+        this.tbvCategorias = tbvCategorias;
         this.objCat=(objCat==null)? new CategoriasDao():objCat;
         CrearUI();
-        this.setTitle("Insertar Usuario");
+        this.setTitle("Inserta categoria");
         this.setScene(escena);
         this.show();
     }
@@ -47,15 +46,16 @@ public class CategoriasForm extends Stage {
         escena= new Scene(vbPrincipal,300,250);
 
     }
-
-    private void GuardarEmpleado() {
-        arrTxtCampos[0].setText(objCat.getDirImagen());
-        arrTxtCampos[1].setText(objCat.getNombreCategoria());
+    private void LlenarForm() {
+        arrTxtCampos[0].setText(objCat.getNombreCategoria());
+        arrTxtCampos[1].setText(objCat.getDirImagen());
     }
 
-    private void LlenarForm() {
-        objCat.setDirImagen(arrTxtCampos[0].getText());
-        objCat.setNombreCategoria(arrTxtCampos[1].getText());
+    private void GuardarEmpleado() {
+        objCat.setNombreCategoria(arrTxtCampos[0].getText());
+        objCat.setDirImagen(arrTxtCampos[1].getText());
+
+
         if (objCat.getIdCategoria()>0){
             objCat.ACTUALIZAR();
         }else objCat.INSERTAR();
@@ -67,5 +67,4 @@ public class CategoriasForm extends Stage {
         arrTxtCampos[1].clear();
 
     }
-
 }
