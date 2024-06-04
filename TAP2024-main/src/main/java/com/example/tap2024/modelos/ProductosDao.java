@@ -1,4 +1,4 @@
-package com.example.tap2024.vistas;
+package com.example.tap2024.modelos;
 
 
 import com.example.tap2024.modelos.Conexion;

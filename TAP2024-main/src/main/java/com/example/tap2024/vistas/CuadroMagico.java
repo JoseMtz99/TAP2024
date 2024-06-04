@@ -75,7 +75,6 @@ public class CuadroMagico extends Stage {
 
         } else if(entrada>=3){
             CrearImpar();
-            //gdpCuadro=new GridPane();
             gdpCuadro.getChildren().clear();
             gdpCuadro.setGridLinesVisible(false);
             gdpCuadro.setPrefSize(width,height);

@@ -193,12 +193,18 @@ public class Memorama extends Stage {
                 gdpCartas.add(arrBtnCarts[i][j].boton,j,i);
                 int finalI = i;
                 int finalJ = j;
-                arrBtnCarts[i][j].boton.setOnAction(actionEvent -> GirarCarta(arrBtnCarts[finalI][finalJ]));
+                arrBtnCarts[i][j].boton.setOnAction(actionEvent -> {
+                    try {
+                        GirarCarta(arrBtnCarts[finalI][finalJ]);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
 
         }
     }
-    private void GirarCarta(Tarjeta tarjeta) {
+    private void GirarCarta(Tarjeta tarjeta) throws InterruptedException {
         if (temp1==null){
             tarjeta.boton.setDisable(true);
             temp1 = new Tarjeta();
@@ -210,51 +216,10 @@ public class Memorama extends Stage {
             temp.setSegundos(segundosTemporizador);
             tarjeta.boton.setGraphic(tarjeta.cara1);
             tarjeta.boton.setDisable(true);
-
-            if (temp1.idTarjeta==tarjeta.idTarjeta){
-                if (turno1){
-                    puntuacion1++;
-                    txtPuntuacion1.setText(puntuacion1+"");
-                }else{
-                    puntuacion2++;
-                    txtPuntuacion2.setText(puntuacion2+"");
-                }
-                paresEncontrados++;
-            }else {
-                tarjeta.boton.setDisable(false);
-                temp1.boton.setDisable(false);
-
-                tarjeta.boton.setGraphic(tarjeta.cara2);
-                temp1.boton.setGraphic(temp1.cara2);
-
-                turno1=temp.CambiarTurno(turno1);
-                if (turno1){
-                    lbJugador1.getStyleClass().clear();
-                    lbJugador2.getStyleClass().clear();
-                    txtPuntuacion1.getStyleClass().clear();
-                    txtPuntuacion2.getStyleClass().clear();
-                    lbJugador1.getStyleClass().addAll("lbl-success","lbl-lg");
-                    lbJugador2.getStyleClass().addAll("lbl-danger");
-                    txtPuntuacion1.getStyleClass().addAll("bg-success");
-                    txtPuntuacion2.getStyleClass().addAll("bg-danger");
-                }else{
-                    lbJugador1.getStyleClass().clear();
-                    lbJugador2.getStyleClass().clear();
-                    txtPuntuacion1.getStyleClass().clear();
-                    txtPuntuacion2.getStyleClass().clear();
-                    lbJugador2.getStyleClass().addAll("lbl-success","lbl-lg");
-                    lbJugador1.getStyleClass().addAll("lbl-danger");
-                    txtPuntuacion2.getStyleClass().addAll("bg-success");
-                    txtPuntuacion1.getStyleClass().addAll("bg-danger");
-                }
-
-            }
+            IdentificarIguales(tarjeta);
             temp1=null;
 
         }
-
-
-
         if (paresEncontrados==entrada){
             temp.setRunning(false);
             Alert alertaGanador = new Alert(Alert.AlertType.INFORMATION);
@@ -265,6 +230,46 @@ public class Memorama extends Stage {
             }else if(puntuacion1<puntuacion2)alertaGanador.setContentText("El ganador es: Jugador 2");
             else alertaGanador.setContentText("Empate");
             Optional<ButtonType> result = alertaGanador.showAndWait();
+        }
+    }
+
+    private void IdentificarIguales(Tarjeta tarjeta) throws InterruptedException {
+        if (temp1.idTarjeta==tarjeta.idTarjeta){
+            if (turno1){
+                puntuacion1++;
+                txtPuntuacion1.setText(puntuacion1+"");
+            }else{
+                puntuacion2++;
+                txtPuntuacion2.setText(puntuacion2+"");
+            }
+            paresEncontrados++;
+        }else {
+            tarjeta.boton.setDisable(false);
+            temp1.boton.setDisable(false);
+            tarjeta.boton.setGraphic(tarjeta.cara2);
+            temp1.boton.setGraphic(temp1.cara2);
+
+            turno1=temp.CambiarTurno(turno1);
+            if (turno1){
+                lbJugador1.getStyleClass().clear();
+                lbJugador2.getStyleClass().clear();
+                txtPuntuacion1.getStyleClass().clear();
+                txtPuntuacion2.getStyleClass().clear();
+                lbJugador1.getStyleClass().addAll("lbl-success","lbl-lg");
+                lbJugador2.getStyleClass().addAll("lbl-danger");
+                txtPuntuacion1.getStyleClass().addAll("bg-success");
+                txtPuntuacion2.getStyleClass().addAll("bg-danger");
+            }else{
+                lbJugador1.getStyleClass().clear();
+                lbJugador2.getStyleClass().clear();
+                txtPuntuacion1.getStyleClass().clear();
+                txtPuntuacion2.getStyleClass().clear();
+                lbJugador2.getStyleClass().addAll("lbl-success","lbl-lg");
+                lbJugador1.getStyleClass().addAll("lbl-danger");
+                txtPuntuacion2.getStyleClass().addAll("bg-success");
+                txtPuntuacion1.getStyleClass().addAll("bg-danger");
+            }
+
         }
     }
 
@@ -350,7 +355,6 @@ class Temporizador extends Thread {
                  throw new RuntimeException(e);
              }
              if (segundos == 0) {
-
                  segundos = 10;
              }
          }

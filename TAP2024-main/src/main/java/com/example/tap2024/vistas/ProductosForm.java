@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import com.example.tap2024.modelos.ProductosDao;
 
 public class ProductosForm extends Stage {
     private Scene escena;
@@ -15,13 +16,13 @@ public class ProductosForm extends Stage {
     private Button btnGuardar;
     private VBox vbPrincipal;
     String [] arrPromts = new String[]{"Nombre del producto","Direccion de la imagen"};
-    private com.example.tap2024.vistas.ProductosDao objPro;
-    private TableView<com.example.tap2024.vistas.ProductosDao> tbvProductos;
+    private ProductosDao objPro;
+    private TableView<ProductosDao> tbvProductos;
 
 
-    public ProductosForm(TableView<com.example.tap2024.vistas.ProductosDao> tbvProductos, com.example.tap2024.vistas.ProductosDao objPro) {
+    public ProductosForm(TableView<ProductosDao> tbvProductos, ProductosDao objPro) {
         this.tbvProductos = tbvProductos;
-        this.objPro=(objPro==null)? new com.example.tap2024.vistas.ProductosDao():objPro;
+        this.objPro=(objPro==null)? new ProductosDao():objPro;
         CrearUI();
         this.setTitle("Inserta categoria");
         this.setScene(escena);
@@ -58,7 +59,7 @@ public class ProductosForm extends Stage {
             objPro.ACTUALIZAR();
         }else objPro.INSERTAR();
 
-        tbvProductos.setItems(objPro.CONSULTAR());
+        tbvProductos.setItems(objPro.CONSULTARVISTA());
         tbvProductos.refresh();
 
         arrTxtCampos[0].clear();

@@ -10,6 +10,7 @@ module com.example.tap2024 {
     requires mysql.connector.j;
 
     requires org.kordamp.bootstrapfx.core;
+    requires java.desktop;
 
     opens com.example.tap2024.modelos;
 }

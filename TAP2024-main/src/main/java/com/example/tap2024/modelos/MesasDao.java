@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class MesasDao {
-    private int  numeroMesa, ocupada;
+    private int  numeroMesa, ocupada, idOrden;
 
     public int getNumeroMesa() {
         return numeroMesa;
@@ -79,6 +79,22 @@ public class MesasDao {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public int CONSULTARNUMEROORDEN(){
+        int orden=0;
+        String query = "SELECT idOrden from Mesa left join Orden ON Mesa.numeroMesa = Orden.numeroMesa where Activa = 1 and Mesa.numeroMesa ="+numeroMesa+";";
+        try{
+            Statement stmt = Conexion.connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()){
+                orden=res.getInt("idOrden");
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return orden;
     }
 
 }

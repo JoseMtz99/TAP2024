@@ -1,6 +1,6 @@
 package com.example.tap2024.componentes;
 
-import com.example.tap2024.vistas.ProductosDao;
+import com.example.tap2024.modelos.ProductosDao;
 import com.example.tap2024.vistas.ProductosForm;
 
 import javafx.scene.control.*;

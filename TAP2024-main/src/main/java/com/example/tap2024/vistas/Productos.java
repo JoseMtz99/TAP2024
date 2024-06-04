@@ -4,6 +4,7 @@ import com.example.tap2024.componentes.ButtonCell;
 import com.example.tap2024.componentes.ButtonCellP;
 import com.example.tap2024.modelos.CategoriasDao;
 import com.example.tap2024.modelos.EmpleadosDao;
+import com.example.tap2024.modelos.ProductosDao;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,7 +19,7 @@ public class Productos extends Stage {
     private Panel pnlPrincipal;
     private BorderPane bdpPrincipal;
     private ToolBar tlbOpciones;
-    private TableView<com.example.tap2024.vistas.ProductosDao> tbvProducto;
+    private TableView<ProductosDao> tbvProducto;
     private Scene escena;
     private Button btnAgregarProducto;
 
@@ -50,36 +51,36 @@ public class Productos extends Stage {
     }
 
     private void CreateTable() {
-        com.example.tap2024.vistas.ProductosDao objProductos = new com.example.tap2024.vistas.ProductosDao();
-        tbvProducto = new TableView<com.example.tap2024.vistas.ProductosDao>();
+        ProductosDao objProductos = new ProductosDao();
+        tbvProducto = new TableView<ProductosDao>();
 
-        TableColumn<com.example.tap2024.vistas.ProductosDao, String> tbcNomPro = new TableColumn<>("Introduce el Nombre");
+        TableColumn<ProductosDao, String> tbcNomPro = new TableColumn<>("Introduce el Nombre");
         tbcNomPro.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
 
-        TableColumn<com.example.tap2024.vistas.ProductosDao, String> tbcPrecio = new TableColumn<>("Introduce el Precio");
+        TableColumn<ProductosDao, String> tbcPrecio = new TableColumn<>("Introduce el Precio");
         tbcPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
-        TableColumn<com.example.tap2024.vistas.ProductosDao, String> tbcCosto = new TableColumn<>("Introduce el Costo");
+        TableColumn<ProductosDao, String> tbcCosto = new TableColumn<>("Introduce el Costo");
         tbcCosto.setCellValueFactory(new PropertyValueFactory<>("costo"));
 
-        TableColumn<com.example.tap2024.vistas.ProductosDao, String> tbcDirImg = new TableColumn<>("Introduce la direccion");
+        TableColumn<ProductosDao, String> tbcDirImg = new TableColumn<>("Introduce la direccion");
         tbcDirImg.setCellValueFactory(new PropertyValueFactory<>("dirImagen"));
 
-        TableColumn<com.example.tap2024.vistas.ProductosDao,String> tbcEditar = new TableColumn<>("Editar");
+        TableColumn<ProductosDao,String> tbcEditar = new TableColumn<>("Editar");
         tbcEditar.setCellFactory(
-                new Callback<TableColumn<com.example.tap2024.vistas.ProductosDao, String>, TableCell<com.example.tap2024.vistas.ProductosDao, String>>() {
+                new Callback<TableColumn<ProductosDao, String>, TableCell<ProductosDao, String>>() {
             @Override
-            public TableCell<com.example.tap2024.vistas.ProductosDao, String> call(TableColumn<com.example.tap2024.vistas.ProductosDao, String> empleadosDaoStringTableColumn) {
+            public TableCell<ProductosDao, String> call(TableColumn<ProductosDao, String> empleadosDaoStringTableColumn) {
                 return new ButtonCellP(1);
             }
         }
         );
 
-        TableColumn<com.example.tap2024.vistas.ProductosDao,String> tbcEliminar = new TableColumn<>("Eliminar");
+        TableColumn<ProductosDao,String> tbcEliminar = new TableColumn<>("Eliminar");
         tbcEliminar.setCellFactory(
-                new Callback<TableColumn<com.example.tap2024.vistas.ProductosDao, String>, TableCell<com.example.tap2024.vistas.ProductosDao, String>>() {
+                new Callback<TableColumn<ProductosDao, String>, TableCell<ProductosDao, String>>() {
                     @Override
-                    public TableCell<com.example.tap2024.vistas.ProductosDao, String> call(TableColumn<com.example.tap2024.vistas.ProductosDao, String> empleadosDaoStringTableColumn) {
+                    public TableCell<ProductosDao, String> call(TableColumn<ProductosDao, String> empleadosDaoStringTableColumn) {
                         return new ButtonCellP(2);
                     }
                 }
