@@ -1,7 +1,12 @@
 package com.example.tap2024.vistas;
 
-import com.example.tap2024.componentes.ButtonCell;
 import com.example.tap2024.modelos.*;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.UnitValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,16 +18,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
-import javax.swing.event.DocumentListener;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.text.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class AppTaqueria extends Stage {
@@ -42,7 +40,7 @@ public class AppTaqueria extends Stage {
     private Background background;
     private ArrayList<ProductosDao> listaProductos;
     private TableView<DetalleOrdenDao> tbvDetOrden;
-    private int numeroEmpleado, ordenActual;
+    private int numeroEmpleado, ordenActual, mesaActual;
     private Float totalCuenta;
 
     public AppTaqueria(boolean administrador) {
@@ -84,7 +82,13 @@ public class AppTaqueria extends Stage {
         imageViewCuenta.setFitHeight(50);
         cuentaButton = new Button("Generar cuenta");
         cuentaButton.setDisable(true);
-        cuentaButton.setOnAction(actionEvent -> generarCuenta());
+        cuentaButton.setOnAction(actionEvent -> {
+            try {
+                generarCuenta();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
         cuentaButton.setGraphic(imageViewCuenta);
 
         Image imagenEmpleados = new Image(getClass().getResourceAsStream("/Images/admon.png"));
@@ -203,9 +207,54 @@ public class AppTaqueria extends Stage {
 
     }
 
-    private void generarCuenta() {
+    private void generarCuenta() throws FileNotFoundException {
+        MesasDao mesa = new MesasDao();
+        mesa.setNumeroMesa(mesaActual);
+        mesa.setOcupada(0);
+        mesa.ACTUALIZAR();
+        OrdenDao orden = new OrdenDao();
+        orden.setIdOrden(ordenActual);
+        orden.setActiva(0);
+        orden.CERRARCUENTA();
+        agregarMesas();
 
+        crearPdf();
+    }
 
+    private void crearPdf () throws FileNotFoundException {
+
+        String dest = "C:\\\\Users\\\\josec\\\\OneDrive\\\\Tecno\\\\IntelliJ Projects\\\\TAP2024-main\\\\TAP2024-main\\\\src\\\\main\\\\resources\\\\Files\\\\archivopdf.pdf";
+        File file = new File(dest);
+        file.getParentFile().mkdirs();
+
+        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(dest));
+        com.itextpdf.layout.Document doc = new com.itextpdf.layout.Document(pdfDoc);
+        doc.add(new Paragraph("Orden: "+ordenActual));
+        Table table = new Table(UnitValue.createPercentArray(3)).useAllAvailableWidth();
+        table.addCell("Cantidad");
+        table.addCell("Producto");
+        table.addCell("Precio Unitario");
+        ArrayList<DetalleOrdenDao> list = new ArrayList<>();
+        DetalleOrdenDao detDao = new DetalleOrdenDao();
+        list = detDao.CONSULTAARRAY(ordenActual);
+        OrdenDao ord = new OrdenDao();
+        ord.setIdOrden(ordenActual);
+        ord = ord.CONSULTARPORORDEN();
+        doc.add(new Paragraph("Fecha: "+ ord.getFecha()));
+        EmpleadosDao emp = new EmpleadosDao();
+        emp.setIdEmpleado(ord.getIdEmpleado());
+        emp = emp.CONSULTARPOREMPLEADO();
+        doc.add(new Paragraph("Empleado: "+ emp.getNomEmpleado()));
+        for (int i = 0; i < list.size(); i++) {
+            table.addCell(list.get(i).getCantidad()+"");
+            table.addCell(list.get(i).getNombreProducto());
+            table.addCell(list.get(i).getPrecio()+"");
+        }
+
+        doc.add(table);
+        doc.add(new Paragraph("IVA: "+totalCuenta*.138));
+        doc.add(new Paragraph("Total: "+totalCuenta));
+        doc.close();
     }
 
     private void agregarMesas() {
@@ -255,6 +304,7 @@ public class AppTaqueria extends Stage {
 
 
     private void BotonMesa(IconoMesa icono) {
+        mesaActual=icono.mesa.getNumeroMesa();
         cuentaButton.setDisable(true);
         gdpCategorias.setDisable(true);
         gdpProducto.setVisible(false);
@@ -264,6 +314,11 @@ public class AppTaqueria extends Stage {
         } else {
             tomarOrdenButton.setText("Modificar orden");
             tomarOrdenButton.setDisable(false);
+
+            DetalleOrdenDao objDet = new DetalleOrdenDao();
+            objDet.setIdOrden(ordenActual);
+            totalCuenta = objDet.TotalizarOrden();
+            txtTotal.setText(totalCuenta + "");
         }
 
         tomarOrdenButton.setOnAction(event -> BotonOrden(icono));
@@ -271,10 +326,11 @@ public class AppTaqueria extends Stage {
 
     private void BotonOrden(IconoMesa icono) {
         ordenActual = icono.mesa.CONSULTARNUMEROORDEN();
-        gdpCategorias.setDisable(false);
         OrdenDao objOrden = new OrdenDao();
         DetalleOrdenDao objDet = new DetalleOrdenDao();
         if (icono.mesa.getOcupada() != 1) {
+            totalCuenta= (float) 0;
+            txtTotal.setText(String.valueOf(totalCuenta));
             icono.mesa.setOcupada(1);
             icono.mesa.ACTUALIZAR();
             objOrden.setIdEmpleado(numeroEmpleado);
@@ -284,14 +340,15 @@ public class AppTaqueria extends Stage {
             objOrden.INSERTAR();
             agregarMesas();
         } else {
-            cuentaButton.setDisable(false);
-            objDet.setIdOrden(ordenActual);
-            totalCuenta = objDet.TotalizarOrden();
-            txtTotal.setText(totalCuenta + "");
+            gdpCategorias.setDisable(false);
 
         }
 
         crearTabla(icono.mesa.CONSULTARNUMEROORDEN());
+
+        if (!tbvDetOrden.getItems().isEmpty()) {
+            cuentaButton.setDisable(false);
+        }
 
     }
 
@@ -321,6 +378,7 @@ public class AppTaqueria extends Stage {
 
             tbvDetOrden.getItems().removeAll();
             tbvDetOrden.setItems(objDet.CONSULTARORDEN(orden));
+
 
         }
         lblOrden.setText("Orden: " + orden);
@@ -378,6 +436,9 @@ public class AppTaqueria extends Stage {
     }
 
     private void BotonProducto(IconoProducto icnProd) {
+        cantidad = 1;
+        txtCantidad.setText(cantidad+"");
+        btnMenos.setDisable(true);
         btnAgregar.setDisable(false);
         btnAgregar.setOnAction(actionEvent -> agregarProducto(icnProd));
 

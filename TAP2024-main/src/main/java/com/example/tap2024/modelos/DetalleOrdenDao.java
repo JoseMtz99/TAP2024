@@ -8,6 +8,7 @@ import javafx.scene.chart.XYChart;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DetalleOrdenDao {
     private int cantidad, idProducto, idOrden;
@@ -103,6 +104,28 @@ public class DetalleOrdenDao {
 // select SUM(cantidad), nombreProducto, AVG(do.precio) from detalleOrden do join producto p on do.idProducto = p.idProducto where idOrden = 1 group by nombreProducto;
     public ObservableList<DetalleOrdenDao> CONSULTARORDEN(int orden){
         ObservableList<DetalleOrdenDao> listaDet = FXCollections.observableArrayList();
+        String query = "select SUM(cantidad) as Cantidad, nombreProducto, AVG(do.precio) as Precio from detalleOrden do join producto p on do.idProducto = p.idProducto where idOrden = "+orden+" group by nombreProducto;";
+        try{
+            DetalleOrdenDao detalle;
+            Statement stmt = Conexion.connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()){
+                detalle = new DetalleOrdenDao();
+                detalle.cantidad=res.getInt("Cantidad");
+                detalle.nombreProducto=res.getString("nombreProducto");
+                detalle.precio=res.getFloat("Precio");
+
+                listaDet.add(detalle);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return listaDet;
+    }
+
+    public ArrayList<DetalleOrdenDao> CONSULTAARRAY(int orden){
+        ArrayList<DetalleOrdenDao> listaDet = new ArrayList<>();
         String query = "select SUM(cantidad) as Cantidad, nombreProducto, AVG(do.precio) as Precio from detalleOrden do join producto p on do.idProducto = p.idProducto where idOrden = "+orden+" group by nombreProducto;";
         try{
             DetalleOrdenDao detalle;

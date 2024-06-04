@@ -127,6 +127,28 @@ public class EmpleadosDao {
         return listaEmp;
     }
 
+    public EmpleadosDao CONSULTARPOREMPLEADO(){
+        EmpleadosDao emp = new EmpleadosDao();
+        String query = "SELECT * from Empleado where idEmpleado ="+idEmpleado;
+        try{
+
+            Statement stmt = Conexion.connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()){
+                emp.idEmpleado = res.getInt("idEmpleado");
+                emp.nomEmpleado=res.getString("nomEmpleado");
+                emp.rfcEmpleado=res.getString("rfcEmpleado");
+                emp.salario=res.getFloat("salario");
+                emp.telefono=res.getString("telefono");
+                emp.direccion=res.getString("direccion");
+
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return emp;
+    }
+
 
 
 }

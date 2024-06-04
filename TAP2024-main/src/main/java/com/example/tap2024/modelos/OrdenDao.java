@@ -88,6 +88,20 @@ public class OrdenDao {
             e.printStackTrace();
         }
     }
+
+    public void CERRARCUENTA(){
+        String query = "UPDATE orden SET " +
+                "activa = "+activa+" "+
+                "WHERE idOrden = "+idOrden;
+
+        try {
+            Statement stmt = Conexion.connection.createStatement();
+            stmt.executeUpdate(query);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void ELIMINAR(){
         String query = "DELETE FROM orden where idOrden = "+idOrden;
         try {
@@ -120,6 +134,29 @@ public class OrdenDao {
         }
 
         return listaOrden;
+    }
+
+    public OrdenDao CONSULTARPORORDEN(){
+
+        String query = "SELECT * from orden where idOrden ="+idOrden;
+        OrdenDao orden = new OrdenDao();
+        try{
+
+            Statement stmt = Conexion.connection.createStatement();
+            ResultSet res = stmt.executeQuery(query);
+            while (res.next()){
+
+                orden.idOrden=res.getInt("idOrden");
+                orden.idEmpleado=res.getInt("idEmpleado");
+                orden.numeroMesa=res.getInt("numeroMesa");
+                orden.fecha=res.getString("fecha");
+                orden.observaciones=res.getString("observaciones");
+                orden.activa=res.getInt("activa");
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return orden;
     }
 
 

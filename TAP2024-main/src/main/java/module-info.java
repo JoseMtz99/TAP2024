@@ -11,6 +11,8 @@ module com.example.tap2024 {
 
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
+    requires kernel;
+    requires layout;
 
     opens com.example.tap2024.modelos;
 }
