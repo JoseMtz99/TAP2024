@@ -13,6 +13,7 @@ module com.example.tap2024 {
     requires java.desktop;
     requires kernel;
     requires layout;
+    requires jdk.accessibility;
 
     opens com.example.tap2024.modelos;
 }

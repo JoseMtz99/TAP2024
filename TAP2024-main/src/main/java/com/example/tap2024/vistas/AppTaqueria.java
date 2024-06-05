@@ -62,10 +62,8 @@ public class AppTaqueria extends Stage {
         imgFondo = new Image(getClass().getResourceAsStream("/images/Fondo.jpeg"));
         backgroundImage = new BackgroundImage(imgFondo, null, null, null, null);
 
-
         vboxBotones = new VBox(10);
         vboxBotones.setAlignment(Pos.TOP_CENTER);
-
 
         Image imagenOrden = new Image(getClass().getResourceAsStream("/Images/orden.png"));
         ImageView imageViewOrden = new ImageView(imagenOrden);
@@ -102,8 +100,6 @@ public class AppTaqueria extends Stage {
         ImageView imageViewCocina = new ImageView(imagenCocina);
         imageViewCocina.setFitWidth(50);
         imageViewCocina.setFitHeight(50);
-
-
         Image imagenSalir = new Image(getClass().getResourceAsStream("/Images/salir.png"));
         ImageView imageViewSalir = new ImageView(imagenSalir);
         imageViewSalir.setFitWidth(50);
@@ -112,7 +108,6 @@ public class AppTaqueria extends Stage {
         regresarButton.setGraphic(imageViewSalir);
 
         estiloBotones = "-fx-font-size: 15px; -fx-min-width: 120px; -fx-min-height: 120px; -fx-background-color: gray;";
-
 
         tomarOrdenButton.setStyle(estiloBotones);
         cuentaButton.setStyle(estiloBotones);
@@ -226,7 +221,6 @@ public class AppTaqueria extends Stage {
         String dest = "C:\\\\Users\\\\josec\\\\OneDrive\\\\Tecno\\\\IntelliJ Projects\\\\TAP2024-main\\\\TAP2024-main\\\\src\\\\main\\\\resources\\\\Files\\\\archivopdf.pdf";
         File file = new File(dest);
         file.getParentFile().mkdirs();
-
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(dest));
         com.itextpdf.layout.Document doc = new com.itextpdf.layout.Document(pdfDoc);
         doc.add(new Paragraph("Orden: "+ordenActual));
@@ -490,17 +484,6 @@ public class AppTaqueria extends Stage {
         cantidad++;
         txtCantidad.setText(String.valueOf(cantidad));
     }
-
-
-    private void botonPresionado(String opcion) {
-        System.out.println("Botón presionado: " + opcion);
-        if (opcion.equals("Empleados")) {
-            EmpleadoTaqueria empleadoTaqueria = new EmpleadoTaqueria();
-            empleadoTaqueria.show();
-        }
-
-    }
-
 
 
 }
